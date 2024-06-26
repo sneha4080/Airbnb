@@ -1,0 +1,41 @@
+<% layout('layouts/boilerplate') %>
+
+<body>
+  <h3>All listings</h3>
+  <!-- <form   method="get" action="/listing/new">
+        <button>Create New Listings</button>
+        </form>   directl y All listing click to ae page per javay not need-->
+
+  <div class="row row-cols-lg-3 row-md-2 row-cols-sm-1">
+    <% for(let listing of allListings) { %> 
+      <!-- for loop run thay to card creat thay -->
+    <a href="/listing/<%=listing._id%>" class="listing-link">
+      <div class="card col">
+        <img
+          src="<%=listing.image%>"
+          class="card-image-top"
+          alt="listing_image"
+          style="height: 20rem"
+       
+        />
+         <div class="card-img-overlay"></div>
+        <div class="card-body">
+          <p class="card-text">
+            <b> <%=listing.title%> <br /></b>
+            &#8377; 
+            <% if (listing.price != null && !isNaN(listing.price)) { %>
+              <%= listing.price.toLocaleString("en-IN") %>/night
+            <% } else { %>
+              Price not available
+            <% } %>
+          </p>
+
+
+        </div>
+      </div>
+    </a>
+    <% }%>
+  </div>
+
+
+</body>

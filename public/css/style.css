@@ -95,10 +95,15 @@ body {
   }
   
   /* Edit page  edit.ejs */
-  .edit-btn{
-    background-color: #fe424d !important;
-    border: none !important;
-  }
+
+   .btns{
+    display: flex;
+}
+
+.show-card{
+    padding-left: 0;
+    padding-right: 0;
+}
   
   /* show page show.ejs */
   .show-img{

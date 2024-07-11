@@ -10,7 +10,7 @@
     <% for(let listing of allListings) { %> 
       <!-- for loop run thay to card creat thay -->
     <a href="/listing/<%=listing._id%>" class="listing-link">
-      <div class="card col">
+      <div class="card col listing-card">  <!--add the class to make diffrent stylelisting-card----> 
         <img
           src="<%=listing.image%>"
           class="card-image-top"

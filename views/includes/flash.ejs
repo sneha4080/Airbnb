@@ -1,0 +1,31 @@
+<!--empty alert na aave aena mate-->
+
+<% if (success && success.length) { %>
+<div class="alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
+  <%= success %>
+  <!-- je This variable is defined in the response locals inside midd/ware  in your app.js -->
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+<% } %>
+
+
+<!-- show error messg -->
+
+<% if (error && error.length) { %>
+    <div class="alert  alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
+      <%= error %>
+      <!-- je This variable is defined in the response locals inside midd/ware  in your app.js -->
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <% } %>
+    

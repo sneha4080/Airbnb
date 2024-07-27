@@ -1,102 +1,77 @@
 const express = require('express');
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js") //use create route 
-const { listingSchema, reviewSchema } = require("../schema.js");
-const ExpressError = require("../utils/ExpressError.js");
 const Listing = require("../models/Listing.js");//listing file ne require kari
+const { isLoggedIn, isOwner, listingSchema, validateReview } = require("../middleware.js")
+const flash = require('connect-flash');
+
+
+const { validateListing } = require("../middleware.js")
+
+const listingController = require("../Controllers/listing.js")
+const multer = require('multer')
+const { storage } = require("../ClouConfig.js");
+const upload = multer({ storage })
 
 
 
+// both req Ggo to root(/) so use Router.route method & combine the index &  create route
+router
+      .route("/")
+      .get(wrapAsync(listingController.index))
+      .post(isLoggedIn,
+            upload.single('listing[image]'),
+            validateListing,
+            wrapAsync(listingController.crateListingasync)
+      );
 
-
-
-const validateListing = ((req, res, next) => {
-    console.log(req.body)
-    const { error } = listingSchema.validate(req.body);
-    if (error) {
-          let errMsg = error.details.map((el) => el.message).join(",");
-          throw new ExpressError(400, errMsg);
-    } else {
-          next();
-    }
-});
-
-
-
-
-// index Route
-router.get("/listing",wrapAsync(async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index.ejs",{ allListings });
-})
-);    
+// .post(upload.single('listing[image]'), (req, res) => {
+//       res.send(req.file)
+// })
 
 //   New Route
-router.get("/listing/new", wrapAsync(async (req, res) => { //new form mate new.ejs
-      await Listing.findByIdAndUpdate();
-      res.render("listings/new.ejs");
-}))
+router.get("/new", isLoggedIn, listingController.renderNewFrom);
+
+
+router.route("/:id")
+      .get(wrapAsync(listingController.showListinng))
+      .put(
+            isLoggedIn,
+            isOwner,
+            upload.single('listing[image]'),
+            validateListing, wrapAsync(listingController.updateListing)
+      )
+      .delete(
+            isLoggedIn, //first check condition logedIn then check kare owner che ke nai
+            isOwner,
+            wrapAsync(listingController.deleteListing)
+      );
+
+
 
 //Show Route //new route ne pela lakhiyu beacz ae pela new check kare pachi id per jay
-router.get("/listing/:id", wrapAsync(async (req, res) => {
-      let { id } = req.params;
-      await Listing.findByIdAndUpdate();
-
-      const listing = await Listing.findById(id).populate("reviews");
-
-      res.render("listings/show.ejs", { listing })
-}))
-
-
-// Create Route  new lit crerat thay
-
-router.post("/listing", validateListing, wrapAsync(async (req, res, next) => { //use wrapAsync remove try & catch
-      let result = listingSchema.validate(req.body);
-      await Listing.findByIdAndUpdate();
-      await Listing.findByIdAndUpdate();
-      console.log(result);
-      //  if(result.error){
-      //       throw new ExpressError(400,result.error);
-      //  }
-      const newListing = new Listing(req.body.listing); //.listing thi data obje key : value pair ma ave not array       
-      await newListing.save();
-      res.redirect("./listing");
-}))
+// router.get("/:id", wrapAsync(listingController.showListinng)
+// );
 
 
 //    Edit Route
-router.get("/listing/:id/edit", wrapAsync(async (req, res) => {
-      let { id } = req.params;
-      // await Listing.findByIdAndUpdate();
-      const listing = await Listing.findById(id);
-      console.log(id);
-      res.render("listings/edit.ejs");
-    
-}))
-
-// Update ROUTE
-router.put("/listing/:id", validateListing, wrapAsync(async (req, res) => {
-      // if (!req.body.listing) {
-      await Listing.findByIdAndUpdate();
-      //       throw new ExpressError(400, "Send Valid data")
-      // } //not need directly validate thi add thay
-      console.log("REQ RECEIVED")
-      let { id } = req.params;
-
-      await Listing.findByIdAndUpdate(id, { ...req.body.listing });
-      res.redirect(`/listing/${id}`);
-})
+router.get("/:id/edit",
+      isLoggedIn,
+      isOwner,
+      wrapAsync(listingController.editListing)
 )
 
-// DELETE ROUTE
-router.delete("/listings/:id/reviews", wrapAsync(async (req, res) => {
-      console.log("DELETED LISTING")
-      await Listing.findByIdAndUpdate();
-      let { id } = req.params;
-      console.log(id)
-      let deletedListing = await Listing.findByIdAndDelete(id);
-      console.log(deletedListing);
-      res.redirect("/listing");
-}))
 
+// DELETE ROUTE
+router.delete("/:id/reviews",
+      isLoggedIn, //first check condition logedIn then check kare owner che ke nai
+      isOwner,
+      wrapAsync(listingController.deleteListing)
+);
 module.exports = router;
+
+
+
+// the error was because of wrong route listing and listings
+// app.use listings = listing //here
+// yes and in delete too there was listings

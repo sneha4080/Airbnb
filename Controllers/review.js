@@ -10,7 +10,6 @@ module.exports.createReview = async (req, res) => {
     console.log(listing)
     let newReview = new Review(req.body.review);
     newReview.author = req.user._id; //new review no authore store thay
-    console.log(newReview)
     //   show.ejs ma form banauy aema review rating pass karva newReview ma store karyu
     listing.reviews.push(newReview);
     //   each listing jode review array hashe to ene push karvu newReview ander
@@ -18,7 +17,7 @@ module.exports.createReview = async (req, res) => {
     await listing.save();//beacu existing db ni document ma change karva use save function that is alo Async itself
     req.flash("success", "New review created!");
     res.redirect(`/listing/${listing._id}`);
-    // res.render('show', { item: item });
+    
 }
 
 module.exports.destroyReview = async (req, res) => {

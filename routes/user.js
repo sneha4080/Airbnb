@@ -1,23 +1,34 @@
 const express = require('express'); // Correct, for example
-const  route  = require('./listing');
+const route = require('./listing');
 const router = express.Router();
 const User = require("../models/user.js");
 const user = require('../models/user.js');
+const wrapAsync = require('../utils/wrapAsync.js');
+const passport = require('passport');
+const { saveRedirectUrl } = require('../middleware.js');
 
-router.get("/signup",(req,res)=>{
-    res.render("users/signup.ejs");
-})
+const userController = require("../Controllers/user.js")
 
 
-router.post("/signup",async(req,res)=>{
-    let {username,email,password} = req.body;
-    const newUser = new User = ({email,username});
-   const registerUser =  await User.register(newUser,password); //register katvav
-   console.log(registerUser);
-   req.flash("success","Welcome to Wanduerlust!");
-   res.redirect("/listing");
+router.route("/signup")
+    .get(userController.renderSignupForm)
+    .post(wrapAsync(
+        userController.signupRoute
+    )
+    )
 
-})
+router.route("/login")
+    .get(userController.renderLoginForm)
+  .post(saveRedirectUrl,
+        passport.authenticate("local", {
+            failureRedirect: "/login",
+            failureFlash: true,
+        }),
+        userController.Login
+    );
 
+router.get("/logout",
+    userController.Logout
+);
 
 module.exports = router;

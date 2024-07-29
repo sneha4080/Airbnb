@@ -9,10 +9,26 @@ const flash = require('connect-flash');
 const { validateListing } = require("../middleware.js")
 
 const listingController = require("../Controllers/listing.js")
+<<<<<<< HEAD
+=======
+const multer = require('multer')
+const { storage } = require("../ClouConfig.js");
+const upload = multer({ storage })
+>>>>>>> 4e574e3 (Create branch)
 
 
 
+// both req Ggo to root(/) so use Router.route method & combine the index &  create route
+router
+      .route("/")
+      .get(wrapAsync(listingController.index))
+      .post(isLoggedIn,
+            upload.single('listing[image]'),
+            validateListing,
+            wrapAsync(listingController.crateListingasync)
+      );
 
+<<<<<<< HEAD
 // both req Ggo to root(/) so use Router.route method & combine the index &  create route
 router
       .route("/")
@@ -22,12 +38,18 @@ router
             wrapAsync(listingController.crateListingasync)
       );
 
+=======
+// .post(upload.single('listing[image]'), (req, res) => {
+//       res.send(req.file)
+// })
+>>>>>>> 4e574e3 (Create branch)
 
 //   New Route
 router.get("/new", isLoggedIn, listingController.renderNewFrom);
 
 
 router.route("/:id")
+<<<<<<< HEAD
 .get( wrapAsync(listingController.showListinng))
 .put(
       isLoggedIn,
@@ -39,6 +61,20 @@ router.route("/:id")
       isOwner,
       wrapAsync(listingController.deleteListing)
 );
+=======
+      .get(wrapAsync(listingController.showListinng))
+      .put(
+            isLoggedIn,
+            isOwner,
+            upload.single('listing[image]'),
+            validateListing, wrapAsync(listingController.updateListing)
+      )
+      .delete(
+            isLoggedIn, //first check condition logedIn then check kare owner che ke nai
+            isOwner,
+            wrapAsync(listingController.deleteListing)
+      );
+>>>>>>> 4e574e3 (Create branch)
 
 
 
@@ -54,12 +90,15 @@ router.get("/:id/edit",
       wrapAsync(listingController.editListing)
 )
 
+<<<<<<< HEAD
 // // UPDATE ROUTE
 // router.put("/:id",
 //       isLoggedIn,
 //       isOwner,
 //       validateListing, wrapAsync(listingController.updateListing)
 // );
+=======
+>>>>>>> 4e574e3 (Create branch)
 
 // DELETE ROUTE
 router.delete("/:id/reviews",
@@ -73,4 +112,8 @@ module.exports = router;
 
 // the error was because of wrong route listing and listings
 // app.use listings = listing //here
+<<<<<<< HEAD
 // yes and in delete too there was listings
+=======
+// yes and in delete too there was listings
+>>>>>>> 4e574e3 (Create branch)

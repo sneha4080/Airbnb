@@ -1,112 +1,113 @@
 body {
- 
-    font-family: "Plus Jakarta Sans", sans-serif !important;
-    display: flex; /** min - height 100vh j rey display flex to footer ae bottam ma sticky bane **/
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  .container{
-    flex:1; /**  bolerplate na inside containwe class akhi height occupai kare footer bottam embedd thay*/
-  }
-  .navbar {
-    height: 5rem;
-    background-color: white;
-    /* color whitw aapta all listing nav per scroll nai tahy */
-  }
-  .fa-compass {
-    color: #fe424d;
-    font-size: 2rem;
-  }
-  .nav-link {
-    color: #222222 !important;
-    /* boottrap ni custom style ne  overright kare */
-  }
-  
-  /* footer style */
-  .f-info-links a {
-    text-decoration: none;
-    color: #222222;
-  }
-  .f-info-links a:hover {
-    text-decoration: underline;
-  }
-  .f-info{
-      display: flex;
-      height: 8rem;
-      background-color: #ebebeb;
-      flex-wrap: wrap; 
-      /* diff line ma aave */
-      justify-content: center;
-      align-items: space-evenly;
-     
-  
-  }
-  
-  .f-info-links ,
-  .f-info-socials ,
-  .f-info-brand{
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-  }
-  
-  .f-info-socials i{
-      font-size: 1.4rem;
-      margin-right: 1rem;
-  }
-  .f-info{
-      text-align: center;
-  }
-  /* card style  index.ejs*/
-  .listing-card{
-    border: none !important;
-    margin-bottom: 2rem;
-    margin-top: 2rem;
-  }
-  .card-image-top{
-    border-radius: 1rem !important;
-    width: 100% !important;   /**img  badhii width occupay kare */
-    object-fit: cover;
-    
-  }
-  .card-body{
-    padding: 0 !important;
-  }
-  .card-text p{
-    font-weight: 400;
-  }
-  .listing-link{
-    text-decoration: none;
-  }
-  /* card ovrerlay */
-  .card-img-overlay{
-    opacity: 0;
-  
-  }
-  .card-img-overlay:hover{
-    opacity: 0.2;
-    background-color: #fff;
-  }
-  /* new.ejs */
-  .add-btn{
-    background-color: #fe424d !important;
-    border: none !important;
-  }
-  
-  /* Edit page  edit.ejs */
-
-   .btns{
-    display: flex;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  display: flex; /** min - height 100vh j rey display flex to footer ae bottam ma sticky bane **/
+  flex-direction: column;
+  min-height: 100vh;
+}
+.container {
+  flex: 1; /**  bolerplate na inside containwe class akhi height occupai kare footer bottam embedd thay*/
+}
+.navbar {
+  height: 5rem;
+  background-color: white;
+  /* color whitw aapta all listing nav per scroll nai tahy */
+}
+.fa-compass {
+  color: #fe424d;
+  font-size: 2rem;
+}
+.nav-link {
+  color: #222222 !important;
+  /* boottrap ni custom style ne  overright kare */
 }
 
-.show-card{
-    padding-left: 0;
-    padding-right: 0;
+/* footer style */
+.f-info-links a {
+  text-decoration: none;
+  color: #222222;
 }
-  
-  /* show page show.ejs */
-  .show-img{
-    height: 30vh; 
-    border-radius: 10px;
-  }
+.f-info-links a:hover {
+  text-decoration: underline;
+}
+.f-info {
+  display: flex;
+  height: 8rem;
+  background-color: #ebebeb;
+  flex-wrap: wrap;
+  /* diff line ma aave */
+  justify-content: center;
+  align-items: space-evenly;
+}
+
+.f-info-links,
+.f-info-socials,
+.f-info-brand {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.f-info-socials i {
+  font-size: 1.4rem;
+  margin-right: 1rem;
+}
+.f-info {
+  text-align: center;
+}
+/* card style  index.ejs*/
+.listing-card {
+  border: none !important;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+.card-image-top {
+  border-radius: 1rem !important;
+  width: 100% !important; /**img  badhii width occupay kare */
+  object-fit: cover;
+}
+.card-body {
+  padding: 0 !important;
+}
+.card-text p {
+  font-weight: 400;
+}
+.listing-link {
+  text-decoration: none;
+}
+/* card ovrerlay */
+.card-img-overlay {
+  opacity: 0;
+}
+.card-img-overlay:hover {
+  opacity: 0.2;
+  background-color: #fff;
+}
+/* new.ejs */
+.add-btn {
+  background-color: #fe424d !important;
+  border: none !important;
+}
+
+/* Edit page  edit.ejs */
+
+.btns {
+  display: flex;
+}
+
+.show-card {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* show page show.ejs */
+.show-img {
+  height: 30vh;
+  border-radius: 10px;
+}
+
+/* Map */
+#map {
+  height: 400px;
+  width: 80vh;
+}

@@ -12,6 +12,10 @@ body {
   background-color: white;
   /* color whitw aapta all listing nav per scroll nai tahy */
 }
+.navbar-nav{
+  flex-wrap: wrap;
+  flex-direction: row;
+}
 .fa-compass {
   color: #fe424d;
   font-size: 2rem;
@@ -51,15 +55,21 @@ body {
 .f-info-socials i {
   font-size: 1.4rem;
   margin-right: 1rem;
+  
 }
 .f-info {
   text-align: center;
 }
 /* card style  index.ejs*/
+.listing-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Ensures even spacing between cards */
+}
 .listing-card {
   border: none !important;
   margin-bottom: 2rem;
-  margin-top: 2rem;
+  margin-top: 2rem; 
 }
 .card-image-top {
   border-radius: 1rem !important;
@@ -69,11 +79,29 @@ body {
 .card-body {
   padding: 0 !important;
 }
+@media (max-width:600) {
+  .listing-card{
+    flex-wrap: wrap;
+  }
+}
 .card-text p {
   font-weight: 400;
 }
 .listing-link {
   text-decoration: none;
+}
+/* For screens 600px or less, show 2 cards per row */
+@media (max-width: 600px) {
+  .listing-card {
+    flex: 1 1 calc(50% - 1rem); /* 2 cards in a row */
+  }
+}
+
+/* For screens 300px or less, show 1 card per row */
+@media (max-width: 300px) {
+  .listing-card {
+    flex: 1 1 100%; /* 1 card in a row */
+  }
 }
 /* card ovrerlay */
 .card-img-overlay {
@@ -99,6 +127,13 @@ body {
   padding-left: 0;
   padding-right: 0;
 }
+
+.show-card {
+  flex: 1 1 calc(33.33% - 20px); /* Default for larger screens */
+  margin: 10px;
+  box-sizing: border-box;
+}
+
 
 /* show page show.ejs */
 .show-img {

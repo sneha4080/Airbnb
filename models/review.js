@@ -1,4 +1,4 @@
-const { date } = require("joi");
+const { date, types } = require("joi");
 const mongoose = require ("mongoose");
 const reviewSchema =new mongoose.Schema({
 
@@ -22,8 +22,8 @@ const reviewSchema =new mongoose.Schema({
     },
 
     author:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User"
+       type : mongoose.Schema.Types.ObjectId,
+       ref : "User" ,
     }
 
 });

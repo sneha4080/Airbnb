@@ -1,14 +1,13 @@
 <% layout('layouts/boilerplate') %>
 <% layout("./layouts/boilerplate.ejs") %>
-<style>
-     @media only screen and (max-width: 750px) { 
-    .col-5{
-        width: 100% !important;
-    } }
-</style>
+
 <script>
-    let mapToken = "<%= process.env.MAP_TOKEN %>";
-    // let listing =  <%- JSON.stringify(listing )%>;
+    const mapToken = "<%= process.env.MAP_TOKEN %>";
+   let listing= "<%- JSON.stringify(listing) %>"
+
+   window.mapToken="<%=  process.env.MAP_TOKEN %>";
+ 
+
 </script>
   <body>
     <div class="row mt-3">
@@ -128,4 +127,5 @@
           </div>
     </div>
 
-  </body>
+    <script src="/js/map.js"></script>
+    </body>

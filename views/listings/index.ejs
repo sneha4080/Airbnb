@@ -42,7 +42,6 @@
       }
       
         </style>
-    <!-- <h3>All listings</h3> -->
 
     <!-- <form   method="get" action="/listing/new">
         <button>Create New Listings</button>
@@ -97,6 +96,7 @@
         </div>
       </div>
     </div>
+    <div class="listing-card-container">
     <div class="row row-cols-lg-3 row-md-2 row-cols-sm-1">
       <% for(let listing of allListings) { %>
         <!-- for loop run thay to card creat thay -->
@@ -118,7 +118,9 @@
             </div>
           </div>
         </a>
+        
         <% }%>
+      </div>
     </div>
   </body>
   <script>

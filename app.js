@@ -2,8 +2,7 @@ if(process.env.NODE_ENV != "production"){ //production ma nathi to use .env nai 
   require('dotenv').config()
 }
 
-console.log(process.env.SECRET) // remove this after you've confirmed it is working
-
+// console.log(process.env.SECRET) // remove this after you've confirmed it is working
 
 
 const express = require("express");
@@ -26,11 +25,16 @@ const reviewsrouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
 const wrapAsync = require("./utils/wrapAsync.js");
-const Listing = require("./models/Listing.js");
+// const Listing = require("./models/Listing.js");
 
-// const listingRoutes = require('./routes/listing');
+const Listing = require("./models/Listing");
+const listingRoutes = require('./routes/listing');
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/Wanderlust";
+
+
+
+app.use('/listings', listingRoutes);
 
 main()
   .then(() => {
@@ -92,6 +96,9 @@ app.use((req, res, next) => {
   next();
 });
 
+
+// module.exports = router;
+
 // Define your routes after this middleware
 app.use("/listing", listingsRouter);
 app.use("/listing/:id/reviews", reviewsrouter);  //is require to create review
@@ -143,6 +150,31 @@ app.use((req, res, next) => {
 //       console.log("sample was saved");
 //       res.send("successful testing");
 // });
+
+
+// Searching FUnctionality
+
+
+
+// Search functionality
+app.get('/listings/search', (req, res) => {
+    const searchTerm = req.query.searchTerm;
+
+    // Check if searchTerm is provided
+    if (!searchTerm) {
+        return res.send('Please provide a search term');
+    }
+
+    // Perform a search using case-insensitive matching
+    const searchResults = items.filter(item => 
+        new RegExp(searchTerm, 'i').test(item.name)
+    );
+
+    // Render the results (for now, we'll just send a JSON response)
+    res.json({ searchResults });
+});
+
+// Home route to show a simple search form
 
 app.all("*", (req, res, next) => {
       next(new ExpressError(404, "Page Not Found"));//NOT 

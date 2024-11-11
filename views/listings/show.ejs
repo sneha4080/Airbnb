@@ -1,12 +1,28 @@
 <% layout('layouts/boilerplate') %>
 <% layout("./layouts/boilerplate.ejs") %>
 
-<script>
+
+
+<!-- <script>
     const mapToken = "<%= process.env.MAP_TOKEN %>";
    let listing= "<%- JSON.stringify(listing) %>"
 
    window.mapToken="<%=  process.env.MAP_TOKEN %>";
+   </script> -->
  
+   <script>
+    window.mapToken = "<%= process.env.MAP_TOKEN %>";
+   let listing= <%- JSON.stringify(listing) %>
+ 
+//    app.get('/search', async (req, res) => {
+//     const searchQuery = req.query.country || ''; 
+//     const listings = await Listing.find({ country: new RegExp(searchQuery, 'i') }); // Case-insensitive search
+//     res.json(listings); // Return matching listings
+// });
+
+
+</script>
+
 
 </script>
   <body>
@@ -24,10 +40,19 @@
         <div class="card-body">
           <p class="card-text"></p>
           <p class="card-text">Owner By :<b>
-              <%= listing.owner.username %>
+             <% if(listing.owner?.username) { %>
+              <%= listing.owner.username %>    
+              <!-- jayare username delete karyu dB thi to only show the listing without user nme -->
+              <!-- // error handle karvi mi/w thi when -->
+               <% } %>
+            </b></p>
+          
+              <!-- other text here -->
             </b></p>
           <p class="card-text">
             <%= listing.description %>
+            
+
           </p>
           <p class="card-text">
             &#8377; <%= listing.price.toLocaleString("en-IN") %>
@@ -42,7 +67,8 @@
       </div>
       </br>
 
-      <% if(currUser && listing.owner._id.equals(currUser._id)) { %>
+      <%// if(currUser && listing.owner._id.equals(currUser?._id)) { %>
+        <% if(currUser && listing.owner && listing.owner?._id.equals(currUser?._id)) { %>
         <div class="btns">
           <a href="/listing/<%= listing._id %>/edit" class="btn btn-dark offset-3 add-btn mb-3 col-0">Edit</a>
           <form method="post" action="/listing/<%= listing._id%>/reviews?_method=DELETE">
@@ -125,6 +151,10 @@
             <div id="map"></div>
 
           </div>
+          <!-- <form method="post" action="/listings/all?_method=DELETE">
+            <button class="btn btn-danger">Delete All <Li57750 class="
+              "></Li57750>stings</button>
+          </form> -->
     </div>
 
     <script src="/js/map.js"></script>

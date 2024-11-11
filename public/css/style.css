@@ -25,6 +25,38 @@ body {
   /* boottrap ni custom style ne  overright kare */
 }
 
+.navbar-nav {
+  /* flex-direction: row;
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px; */
+}
+.nav-item {
+   padding-left: 10px;
+   padding-right: 10px; 
+
+}
+@media (max-width: 400px) {
+  .navbar-nav {
+    display: block;
+    flex-direction: row-reverse;
+  }
+  .navbar-nav .nav-item {
+    display: block !important ;
+    /* width: 100%; */
+  }
+}
+@media (max-width: 767.98px) {
+  .navbar-nav {
+    flex-direction: row;
+  }
+}
+@media (max-width: 600px) {
+.nav-left-side{
+    flex-direction: row;
+}
+}
 /* footer style */
 .f-info-links a {
   text-decoration: none;
@@ -64,6 +96,7 @@ body {
 .listing-card-container {
   display: flex;
   flex-wrap: wrap;
+  position: relative;
   justify-content: space-between; /* Ensures even spacing between cards */
 }
 .listing-card {
@@ -79,9 +112,10 @@ body {
 .card-body {
   padding: 0 !important;
 }
-@media (max-width:600) {
-  .listing-card{
-    flex-wrap: wrap;
+@media (max-width:700px) {
+  .card-image-top{
+    overflow: hidden;
+
   }
 }
 .card-text p {
@@ -91,18 +125,12 @@ body {
   text-decoration: none;
 }
 /* For screens 600px or less, show 2 cards per row */
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   .listing-card {
     flex: 1 1 calc(50% - 1rem); /* 2 cards in a row */
-  }
-}
+  /* } */
+/* } */ 
 
-/* For screens 300px or less, show 1 card per row */
-@media (max-width: 300px) {
-  .listing-card {
-    flex: 1 1 100%; /* 1 card in a row */
-  }
-}
 /* card ovrerlay */
 .card-img-overlay {
   opacity: 0;
@@ -128,11 +156,6 @@ body {
   padding-right: 0;
 }
 
-.show-card {
-  flex: 1 1 calc(33.33% - 20px); /* Default for larger screens */
-  margin: 10px;
-  box-sizing: border-box;
-}
 
 
 /* show page show.ejs */
@@ -146,3 +169,5 @@ body {
   height: 400px;
   width: 80vh;
 }
+
+

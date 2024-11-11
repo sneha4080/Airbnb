@@ -2,7 +2,22 @@ const Listing = require("../models/Listing.js")
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken});
+const express = require('express'); // Import Express
 
+const app = express();
+
+
+module.exports.index= (async (req,res)=>{
+    let search  = req.query.data;
+    let type = req.query.q;
+    let allListings = await Listing.find().populate("reviews");
+    if(search){
+        type=search;   
+    }
+    let filterListing = await Listing.find({filter:type});
+    let R = req.route.path
+    res.render("listings/index.ejs",{allListings,type,R});
+  });
 
 module.exports.index = (async (req, res) => {
     const allListings = await Listing.find({});
@@ -87,6 +102,31 @@ module.exports.updateListing = async (req, res) => {
 
 }
 
+// searching functionalitys
+
+const router = express.Router();
+
+
+// Define the /listings/search route
+router.get("/search", async (req, res, next) => {
+  const searchTerm = req.query.searchTerm || ""; // Default to empty string if no term is provided
+
+  const query = {
+    $or: [
+      { title: new RegExp(searchTerm, "i") },
+      { location: new RegExp(searchTerm, "i") },
+      { country: new RegExp(searchTerm, "i") },
+      { description: new RegExp(searchTerm, "i") }
+    ]
+  };
+
+  try {
+    const allListings = await Listing.find(query);
+    res.render("listings/index", { allListings }); // Ensure "listings/index" is a valid view
+  } catch (error) {
+    next(error);
+  }
+});
 module.exports.deleteListing = async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);

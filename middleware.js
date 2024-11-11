@@ -3,6 +3,7 @@ const Review = require("./models/review.js");
 const ExpressError = require("./utils/ExpressError.js");
 const { listingSchema, reviewSchema } = require("./schema.js");
 
+
 module.exports.isLoggedIn = (req, res, next) => {
   console.log(req.user);
   // Check if user is authenticated (assuming Passport)

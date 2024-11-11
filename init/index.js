@@ -1,29 +1,35 @@
 const mongoose = require("mongoose");
 const initData = require("./data.js");
-const listing = require("../models/Listing.js");
+const Listing = require("../models/Listing.js");
 
-const MONGO_URl = "mongodb://127.0.0.1:27017/Wanderlust";
-
-main()
-      .then(() => {
-            console.log("connected to DB");
-      }).catch((err) => {
-            console.log(err);
-      })
-
-
+const MONGO_URL = "mongodb://127.0.0.1:27017/Wanderlust";
 
 async function main() {
-      await mongoose.connect(MONGO_URl);
+  await mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+  console.log("connected to DB");
 }
 
-
-const initDB = async () => {
-      await listing.deleteMany({}) //db ne empty karvah
-      initData.data = initData.data.map((obj) => ({
-            ...obj, owner : "669947484756149521cd275e"
-      }))
-      await listing.insertMany(initData.data); //initData aek obj 
-      console.log("data was initialized");
+async function initDB() {
+  try {
+    await Listing.deleteMany({}); // Clear the collection
+    
+    // Ensure the data includes the correct 'geometry' structure
+    const modifiedData = initData.data.map((obj) => ({
+      ...obj,
+      owner: "6697bc9980bb000827139c30" // Ensure this ID is valid
+    }));
+    
+    // Insert data
+    console.log("Inserting data:", modifiedData); // Debugging line
+    await Listing.insertMany(modifiedData);
+    console.log("Data was initialized");
+  } catch (err) {
+    console.error("Error initializing data:", err);
+  } finally {
+    mongoose.connection.close(); // Close the connection when done
+  }
 }
-initDB();
+
+main().then(initDB).catch((err) => {
+  console.error("Connection error:", err);
+});

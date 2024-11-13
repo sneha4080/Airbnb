@@ -153,25 +153,26 @@ app.use((req, res, next) => {
 
 
 // Searching FUnctionality
+app.get("/listings/search/:searchValue", async (req, res, next) => {
+  const searchTerm = req.params.searchValue; // This should retrieve the search term
+  console.log("Search Term:", searchTerm); // Log to verify it's capturing the term
+  
+  const query = {
+      $or: [
+          { title: new RegExp(searchTerm, 'i') }, 
+          { location: new RegExp(searchTerm, 'i') },
+          { country: new RegExp(searchTerm, 'i') }, 
+          { category: new RegExp(searchTerm, 'i') },
+          { description: new RegExp(searchTerm, 'i') }
+      ]
+  };
 
-
-
-// Search functionality
-app.get('/listings/search', (req, res) => {
-    const searchTerm = req.query.searchTerm;
-
-    // Check if searchTerm is provided
-    if (!searchTerm) {
-        return res.send('Please provide a search term');
-    }
-
-    // Perform a search using case-insensitive matching
-    const searchResults = items.filter(item => 
-        new RegExp(searchTerm, 'i').test(item.name)
-    );
-
-    // Render the results (for now, we'll just send a JSON response)
-    res.json({ searchResults });
+  try {
+      const allListings = await Listing.find(query);
+      res.render("listing/index", { allListings, searchTerm }); // Ensure searchTerm is passed here
+  } catch (error) {
+      next(error);
+  }
 });
 
 // Home route to show a simple search form

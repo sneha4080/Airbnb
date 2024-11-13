@@ -134,10 +134,28 @@
               </div>
             </div>
           </a>
-
-          <% }%>
       </div>
     </div>
+     <!-- for search functonality -->
+     <p>Showing results for "<%= searchTerm %>"</p> <!-- Display the search term if needed -->
+     <% }%>
+    <% if (allListings && allListings.length > 0) { %>
+      <ul>
+          <% allListings.forEach(listing => { %>
+              <li class="listing-item">
+                  <h2><%= listing.title %></h2>
+                  <p>Location: <%= listing.location %></p>
+                  <p>Country: <%= listing.country %></p>
+                  <p>Category: <%= listing.category %></p>
+                  <p>Description: <%= listing.description %></p>
+                  <p>Price: $<%= listing.price %> per night</p>
+                  <img src="<%= listing.image %>" alt="Image of <%= listing.title %>" />
+              </li>
+          <% }) %>
+      </ul>
+  <% } else { %>
+      <p>No listings match your search.</p>
+  <% } %>
   </body>
   <script>
     const switchElement = document.getElementById("flexSwitchCheckDefault");

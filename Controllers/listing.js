@@ -6,18 +6,21 @@ const express = require('express'); // Import Express
 
 const app = express();
 
+app.set('view engine', 'ejs');
+app.set('views',(__dirname, 'views'));
 
-module.exports.index= (async (req,res)=>{
-    let search  = req.query.data;
-    let type = req.query.q;
-    let allListings = await Listing.find().populate("reviews");
-    if(search){
-        type=search;   
-    }
-    let filterListing = await Listing.find({filter:type});
-    let R = req.route.path
-    res.render("listings/index.ejs",{allListings,type,R});
-  });
+
+// module.exports.index= (async (req,res)=>{
+//     let search  = req.query.data;
+//     let type = req.query.q;
+//     let allListings = await Listing.find().populate("reviews");
+//     if(search){
+//         type=search;   
+//     }
+//     let filterListing = await Listing.find({filter:type});
+//     let R = req.route.path
+//     res.render("listings/index.ejs",{allListings,type,R});
+//   });
 
 module.exports.index = (async (req, res) => {
     const allListings = await Listing.find({});
@@ -122,7 +125,7 @@ router.get("/search", async (req, res, next) => {
 
   try {
     const allListings = await Listing.find(query);
-    res.render("listings/index", { allListings }); // Ensure "listings/index" is a valid view
+    res.render("listings/index.ejs", { allListings }); // Ensure "listings/index" is a valid view
   } catch (error) {
     next(error);
   }

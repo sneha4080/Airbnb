@@ -13,7 +13,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
 
-
+const MongoStore = require('connect-mongo');
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
@@ -25,12 +25,12 @@ const reviewsrouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
 const wrapAsync = require("./utils/wrapAsync.js");
-// const Listing = require("./models/Listing.js");
+
 
 const Listing = require("./models/Listing");
 const listingRoutes = require('./routes/listing');
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/Wanderlust";
+const Db_URL = process.env.ATLAS_DB_URL;
 
 
 
@@ -45,7 +45,7 @@ main()
   });
 
 async function main() {
-  await mongoose.connect(MONGO_URL);
+  await mongoose.connect(Db_URL);
 }
 
 app.set("view engine", "ejs");
@@ -55,16 +55,20 @@ app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
-// app.get("/", (req, res) => {
-//   res.send("Hi, I am root");
-// });
 
-
-
-
-
+const Store =  MongoStore.create({
+  mongoUrl:  Db_URL,
+  crypto: {
+    secret: process.env.SECRET, 
+  },
+  touchAfter: 24 * 3600 
+})
+Store.on("error",()=>{
+  console.log("Error IN  MongoDb Sessions ",err)
+})
 
 const sessionOptions = {
+    Store,
       secret: process.env.SECRET,
       resave: false,
       saveUninitialized: true,
@@ -74,9 +78,11 @@ const sessionOptions = {
             httpOnly: true
       },
 };
+
 app.use(passport.initialize());
 app.use(session(sessionOptions))//user aek web na page & diffrent tab ma access kare password use kare nt need to login
 app.use(flash());
+
 
 // app.use(passport.initialize);
 app.use(passport.session());
@@ -169,7 +175,7 @@ app.get("/listings/search/:searchValue", async (req, res, next) => {
 
   try {
       const allListings = await Listing.find(query);
-      res.render("listing/index", { allListings, searchTerm }); // Ensure searchTerm is passed here
+      res.render("listings/index", { allListings, searchTerm }); // Ensure searchTerm is passed here
   } catch (error) {
       next(error);
   }

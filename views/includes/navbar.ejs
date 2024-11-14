@@ -71,8 +71,8 @@
         <a class="nav-link" href="/listing/new">Add listing</a>
       </div>
       <div class="navbar-nav ms-auto "> <!---auto thi nav search bar side ma jay -->
-        <form class="d-flex" role="search">
-          <input class="form-control me-2 search-inp" type="search" placeholder="Search deatination">
+        <form class="d-flex" role="search" action="/listings/search/:searchValue">
+          <input class="form-control me-2 search-inp" type="search" name="searchTerm" placeholder="Search deatination"  aria-label="Search">
           <button class="btn btn-search" type="submit">
             <i class="fa-solid fa-magnifying-glass"></i>Search
           </button>
@@ -86,16 +86,15 @@
  -->
 
       <!-- </div> -->
-      <div class="search-bar ms-auto  ">
-
-        <div class="search-bar ms-auto  ">
-
+            <!-- <div class="search-bar ms-auto  ">
           <form class="form-inline my-2 my-lg-0 d-flex align-items-center" action="/listings/search/:searchValue">
-            <input class="form-control mr-2 mb-3" type="search" name="searchTerm" placeholder="Enter place, location, country etc" aria-label="Search">
-            <button class="btn btn-outline-danger my-2 my-sm-0 ms-2" type="submit">Search</button>
+            <input class="form-control mr-2 mb-3 search-inp" type="search" name="searchTerm" placeholder="Enter place, location, country etc" aria-label="Search">
+            <button class="btn btn-search " type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>Search
+              </button>
           </form>
         </div>
-      </div>
+      </div> -->
 
       <div class="navbar-nav ms-auto nav-left-side"> <!----margin from strt shift right side -->
         <a class="nav-link" href="/listing/new">Airbnb your home</a>

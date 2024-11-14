@@ -1,3 +1,4 @@
+//MVC controller
 const Listing = require("../models/Listing.js")
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken = process.env.MAP_TOKEN;
@@ -8,6 +9,10 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views',(__dirname, 'views'));
+
+//MVC controller
+
+
 
 
 // module.exports.index= (async (req,res)=>{
@@ -46,14 +51,21 @@ module.exports.showListinng = async (req, res) => {
         res.redirect("/listing");
     }
     console.log(listing); //listing ni badhi info print thay
-
-    res.render("listings/show.ejs", { listing })
-}
+    console.log(listing);
+  let response = await geocodingClient.forwardGeocode({
+    query: listing.location,
+    limit: 1
+  })
+  .send();
+  listing.geometry = response.body.features[0].geometry;
+  res.render("listings/show.ejs", { listing });
+};
+   
 
 module.exports.crateListingasync = async (req, res, next) => { //use wrapAsync remove try & catch
   let response =  await   geocodingClient.forwardGeocode({
         query: req.body.listing.location , //req.body na inside listing na inside location je nakhi ae male
-        limit: 1  //budefault size 5 aave pan we set here
+        limit: 1  //bydefault size 5 aave pan we set here
       })
         .send()
 //    console.log(response.body.features[0].geometry) // coordinates: [ 72.579498, 23.02318 ] } male 
@@ -111,11 +123,11 @@ const router = express.Router();
 
 
 // Define the /listings/search route
-router.get("/search", async (req, res, next) => {
+router.get("/:search", async (req, res, next) => {
   const searchTerm = req.query.searchTerm || ""; // Default to empty string if no term is provided
 
   const query = {
-    $or: [
+    $or: [,
       { title: new RegExp(searchTerm, "i") },
       { location: new RegExp(searchTerm, "i") },
       { country: new RegExp(searchTerm, "i") },

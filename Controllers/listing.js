@@ -122,26 +122,26 @@ module.exports.updateListing = async (req, res) => {
 const router = express.Router();
 
 
-// Define the /listings/search route
-router.get("/:search", async (req, res, next) => {
-  const searchTerm = req.query.searchTerm || ""; // Default to empty string if no term is provided
+// // Define the /listings/search route
+// router.get("/:search", async (req, res, next) => {
+//   const searchTerm = req.query.searchTerm || ""; // Default to empty string if no term is provided
 
-  const query = {
-    $or: [,
-      { title: new RegExp(searchTerm, "i") },
-      { location: new RegExp(searchTerm, "i") },
-      { country: new RegExp(searchTerm, "i") },
-      { description: new RegExp(searchTerm, "i") }
-    ]
-  };
+//   const query = {
+//     $or: [,
+//       { title: new RegExp(searchTerm, "i") },
+//       { location: new RegExp(searchTerm, "i") },
+//       { country: new RegExp(searchTerm, "i") },
+//       { description: new RegExp(searchTerm, "i") }
+//     ]
+//   };
 
-  try {
-    const allListings = await Listing.find(query);
-    res.render("listings/index.ejs", { allListings }); // Ensure "listings/index" is a valid view
-  } catch (error) {
-    next(error);
-  }
-});
+//   try {
+//     const allListings = await Listing.find(query);
+//     res.render("listings/index.ejs", { allListings }); // Ensure "listings/index" is a valid view
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 module.exports.deleteListing = async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);

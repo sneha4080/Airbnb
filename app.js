@@ -2,7 +2,7 @@ if(process.env.NODE_ENV != "production"){ //production ma nathi to use .env nai 
   require('dotenv').config()
 }
 
-console.log(process.env.SECRET) // remove this after you've confirmed it is working
+// console.log(process.env.SECRET) // remove this after you've confirmed it is working
 
 
 const express = require("express");
@@ -12,7 +12,6 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
-
 
 const MongoStore = require('connect-mongo');
 const session = require("express-session");
@@ -30,16 +29,13 @@ const wrapAsync = require("./utils/wrapAsync.js");
 
 const Listing = require("./models/Listing");
 const listingRoutes = require('./routes/listing');
+const { date } = require('joi');
 
 const Db_URL = process.env.ATLAS_DB_URL;
 
 
 
 app.use('/listings', listingRoutes);
-
-async function main() {
-  await mongoose.connect(Db_URL);
-}
 
 main()
   .then(() => {
@@ -49,10 +45,9 @@ main()
     console.log(err);
   });
 
-
-
-
-
+async function main() {
+  await mongoose.connect(Db_URL);
+}
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -61,22 +56,20 @@ app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
-const store = MongoStore.create({
-  mongoUrl :  Db_URL,
-  crypto: {  // prefered to use for encryption
-      secret: process.env.SECRET,
+
+const Store =  MongoStore.create({
+  mongoUrl:  Db_URL,
+  crypto: {
+    secret: process.env.SECRET, 
   },
-  touchAfter: 24* 3600,
-});
-
-store.on("error", () => {
-  console.log("ERROR in MONGO SESSION STORE",err);
-});
-
-
+  touchAfter: 24 * 3600 
+})
+Store.on("error",()=>{
+  console.log("Error IN  MongoDb Sessions ",err)
+})
 
 const sessionOptions = {
-      store,
+    Store,
       secret: process.env.SECRET,
       resave: false,
       saveUninitialized: true,
@@ -138,19 +131,8 @@ app.get("/listing", wrapAsync(async (req, res) => {
   res.render("listings/index", { allListings });
 }));
 
-// Example route that sets a flash message
-app.post("/someRoute", (req, res) => {
-  req.flash("success", "Successfully completed the action!");
-  res.redirect("/listing");
-});
 
-// Middleware to set flash messages
-app.use((req, res, next) => {
-  res.locals.success = req.flash("success");
-  res.locals.error = req.flash("error");
-  res.locals.currUser = req.user;
-  next();
-});
+
 
 // app.get("/testListing",async(req,res)=>{
 //       let sampleListing = new Listing({
@@ -167,30 +149,62 @@ app.use((req, res, next) => {
 
 
 // Searching FUnctionality
-app.get("/listings/search/:searchValue", async (req, res, next) => {
-  const searchTerm = req.params.searchValue; // This should retrieve the search term
-  console.log("Search Term:", searchTerm); // Log to verify it's capturing the term
-  
+app.get("/listings/search/:searchValue",async(req,res)=>{
+  const searchTerm = req.query.searchTerm;
   const query = {
       $or: [
-          { title: new RegExp(searchTerm, 'i') }, 
-          { location: new RegExp(searchTerm, 'i') },
-          { country: new RegExp(searchTerm, 'i') }, 
-          { category: new RegExp(searchTerm, 'i') },
-          { description: new RegExp(searchTerm, 'i') }
+        { title: new RegExp(searchTerm, 'i') }, 
+        { location: new RegExp(searchTerm, 'i') },
+        { country: new RegExp(searchTerm, 'i') }, 
+        { category: new RegExp(searchTerm, 'i') }  ,
+        { description: new RegExp(searchTerm, 'i') }
       ]
+    };
+    try {
+
+      const allListings = await Listing.find(query);
+      res.render("listings/index.ejs", { allListings });
+    } catch (error) {
+      next(error);
+    }
+
+})
+
+
+app.get("/listings/search/:searchValue", async (req, res, next) => {
+  const searchTerm = req.params.searchValue; // Retrieve the search term
+  console.log("Search Term:", searchTerm); // Log the search term for debugging
+
+  const query = {
+    $or: [
+      { title: new RegExp(searchTerm, 'i') },
+      { location: new RegExp(searchTerm, 'i') },
+      { country: new RegExp(searchTerm, 'i') },
+      { category: new RegExp(searchTerm, 'i') },
+      { description: new RegExp(searchTerm, 'i') },
+    ],
   };
 
+  console.log("Generated Query:", JSON.stringify(query, null, 2)); // Log the query for debugging
+
   try {
-      const allListings = await Listing.find(query);
-      res.render("listings/index", { allListings, searchTerm }); // Ensure searchTerm is passed here
+    // Fetch matching listings
+    const results = await Listing.find(query);
+    console.log("Search Results:", results); // Log the results
+
+    // Render the results
+    res.render("listings/index", { allListings: results, searchTerm });
   } catch (error) {
-      next(error);
+    console.error("Error during search:", error); // Log errors
+    next(error);
   }
 });
 
-// Home route to show a simple search form
 
+
+
+
+// Home route to show a simple search form
 app.all("*", (req, res, next) => {
       next(new ExpressError(404, "Page Not Found"));//NOT 
 })

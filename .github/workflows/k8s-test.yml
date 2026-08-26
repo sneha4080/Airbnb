@@ -1,1 +1,29 @@
+name: Test Kubernetes Connection
 
+on:
+  workflow_dispatch:
+
+jobs:
+  test-k8s:
+    runs-on: self-hosted
+
+    steps:
+      - name: Check runner
+        run: |
+          echo "Self-hosted runner is working!"
+
+      - name: Check kubectl
+        run: |
+          kubectl version --client
+
+      - name: Check Kubernetes nodes
+        run: |
+          kubectl get nodes
+
+      - name: Check Air-bnb deployment
+        run: |
+          kubectl get deployment air-bnb-deployment
+
+      - name: Check Air-bnb pods
+        run: |
+          kubectl get pods

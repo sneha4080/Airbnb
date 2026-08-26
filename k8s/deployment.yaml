@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: air-bnb-deployment
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: air-bnb
+
+  template:
+    metadata:
+      labels:
+        app: air-bnb
+
+    spec:
+      containers:
+        - name: air-bnb
+          image: sneha01111/airbnb1:latest
+
+
+          ports:
+            - containerPort: 3003
+
+       

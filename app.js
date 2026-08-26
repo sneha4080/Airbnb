@@ -149,26 +149,6 @@ app.get("/listing", wrapAsync(async (req, res) => {
 
 
 // Searching FUnctionality
-app.get("/listings/search/:searchValue",async(req,res)=>{
-  const searchTerm = req.query.searchTerm;
-  const query = {
-      $or: [
-        { title: new RegExp(searchTerm, 'i') }, 
-        { location: new RegExp(searchTerm, 'i') },
-        { country: new RegExp(searchTerm, 'i') }, 
-        { category: new RegExp(searchTerm, 'i') }  ,
-        { description: new RegExp(searchTerm, 'i') }
-      ]
-    };
-    try {
-
-      const allListings = await Listing.find(query);
-      res.render("listings/index.ejs", { allListings });
-    } catch (error) {
-      next(error);
-    }
-
-})
 
 
 app.get("/listings/search/:searchValue", async (req, res, next) => {
@@ -205,6 +185,9 @@ app.get("/listings/search/:searchValue", async (req, res, next) => {
 
 
 // Home route to show a simple search form
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
 app.all("*", (req, res, next) => {
       next(new ExpressError(404, "Page Not Found"));//NOT 
 })
@@ -213,7 +196,8 @@ app.use((err, req, res, next) => { //middleare thi handle the error to price val
   let { statusCode = 500, message = "something went wrong" } = err;//NOT 
   res.status(statusCode).send(message);
 })
-app.listen(8080, () => {
-  console.log("server working")
+app.listen(3003, () => {
+  console.log("server working 3003")
+  console.log("http://localhost:3003")
 
 })

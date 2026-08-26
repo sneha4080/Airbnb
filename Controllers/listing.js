@@ -10,22 +10,6 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views',(__dirname, 'views'));
 
-//MVC controller
-
-
-
-
-// module.exports.index= (async (req,res)=>{
-//     let search  = req.query.data;
-//     let type = req.query.q;
-//     let allListings = await Listing.find().populate("reviews");
-//     if(search){
-//         type=search;   
-//     }
-//     let filterListing = await Listing.find({filter:type});
-//     let R = req.route.path
-//     res.render("listings/index.ejs",{allListings,type,R});
-//   });
 
 module.exports.index = (async (req, res) => {
     const allListings = await Listing.find({});
@@ -100,7 +84,7 @@ module.exports.editListing = async (req, res) => {
 
 module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
-    let listing = await Listing.findById(id); //find kae id cureuser ni sem to j edit kari shake nai to nai
+    let listing = await Listing.findById(id); //find kae id createeuser ni sem to j edit kari shake nai to nai
     if (!listing.owner._id.equals(res.locals.currUser._id)) {
         req.flash("error", "You don't have permission edit listing");
         return res.redirect(`/listing/${id}`);
@@ -121,27 +105,6 @@ module.exports.updateListing = async (req, res) => {
 
 const router = express.Router();
 
-
-// // Define the /listings/search route
-// router.get("/:search", async (req, res, next) => {
-//   const searchTerm = req.query.searchTerm || ""; // Default to empty string if no term is provided
-
-//   const query = {
-//     $or: [,
-//       { title: new RegExp(searchTerm, "i") },
-//       { location: new RegExp(searchTerm, "i") },
-//       { country: new RegExp(searchTerm, "i") },
-//       { description: new RegExp(searchTerm, "i") }
-//     ]
-//   };
-
-//   try {
-//     const allListings = await Listing.find(query);
-//     res.render("listings/index.ejs", { allListings }); // Ensure "listings/index" is a valid view
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 module.exports.deleteListing = async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);

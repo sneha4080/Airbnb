@@ -1,4 +1,5 @@
 <% layout('layouts/boilerplate') %>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
   <body>
     <style>
@@ -51,10 +52,31 @@
         }
         .listing-card{
           overflow: hidden !important;
-        
-
         }
+      }
+      .sidebar{
+        color: black;
+        height: 0.75rem;
+        width: 2rem;
+        margin-left: -99px;
+        left: -399;
+      }
+      #check{
+        margin-left: -90px;
+       
+      }
+     .main-box{
+     height: 100vh;
+     width: 10px;
+     color: black;
+     line-height: 60px;
+      }
 
+      .btn-check{
+        height: 20px;
+        color: black;
+        position: absolute;
+        font-size: 30px;
       }
    
     </style>
@@ -62,7 +84,22 @@
     <!-- <form   method="get" action="/listing/new">
         <button>Create New Listings</button>
         </form>   directl y All listing click to ae page per javay not need-->
-   
+        <div class="main_box">
+            <input type="checkbox" id="check"/>
+            <i class="fa-solid fa-bars fa-2x"></i>
+            <div class="btn-check">
+              <label for="check"></label>
+              
+            </div>
+          <div class="sidebar">
+            <a class="nav-link" href="/listing">Explore</a>
+            <a class="nav-link" href="/listing">All Listings</a>
+            <a class="nav-link" href="/listing/new">Add listing</a>
+          
+          </div>  
+        </div>
+
+
 
         <div id="filters">
           <div class="filter">
@@ -138,7 +175,7 @@
           </div>
         </div>
         
-        <!-- For search functionality -->
+      
         
   
   </body>

@@ -5,9 +5,9 @@
   "name": "air-bnb",
   "version": "1.0.0",
   "main": "index.js",
- "scripts": {
-  "start": "node appc.js"
-},
+  "scripts": {
+    "start": "node appc.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

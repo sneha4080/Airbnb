@@ -31,4 +31,4 @@ jobs:
         run: docker build -t sneha01111/airbnb1:latest .
 
       - name: Push Docker image
-        run: docker push sneha01111/airbnb1:latest .
+        run: docker push sneha01111/airbnb1:latest 
